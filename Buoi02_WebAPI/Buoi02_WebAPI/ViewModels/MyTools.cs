@@ -20,7 +20,7 @@ namespace Buoi02_WebAPI.ViewModels
             return $"{request.Scheme}://{request.Host}/Hinh/no-image.png";
         }
 
-        public static string GetImageBase64(string folder, string fileName, HttpRequest request)
+        public static string GetImageBase64(string folder, string fileName)
         {
             var fullUrl = Path.Combine(
                 Directory.GetCurrentDirectory(),

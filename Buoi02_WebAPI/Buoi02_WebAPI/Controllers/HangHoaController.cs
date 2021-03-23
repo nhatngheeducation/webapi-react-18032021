@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Buoi02_WebAPI.Models;
 using Buoi02_WebAPI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Buoi02_WebAPI.Controllers
@@ -47,5 +49,48 @@ namespace Buoi02_WebAPI.Controllers
             return Ok(data);
         }
 
+        [HttpGet("{id}")]
+        // host/api/HangHoa/11
+        public async Task<IActionResult> GetHangHoa(int id)
+        {
+            var hangHoa = await _context.HangHoa
+                .SingleOrDefaultAsync(hh => hh.MaHh == id);
+            if (hangHoa == null)
+            {
+                return NotFound();
+            }
+            return Ok(new HangHoaVM
+            {
+                MaHh = hangHoa.MaHh,
+                TenHh = hangHoa.TenHh,
+                GiaBan = hangHoa.DonGia,
+                Hinh = MyTools.GetImageBase64("HangHoa", hangHoa.Hinh)
+            });
+        }
+
+        [HttpPost("upload")]
+        public IActionResult UploadFile(IFormFile myFile)
+        {
+            if (myFile == null)
+            {
+                return BadRequest();
+            }            
+            //chỉ định đường dẫn file lưu
+            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Hinh", myFile.FileName);
+
+            try
+            {
+                using (var file = new FileStream(fullPath, FileMode.Create))
+                {
+                    myFile.CopyTo(file);
+                }
+                //return Ok();
+                return StatusCode(StatusCodes.Status200OK);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }
