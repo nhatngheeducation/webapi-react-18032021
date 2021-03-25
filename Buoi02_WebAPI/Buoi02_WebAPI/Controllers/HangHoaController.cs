@@ -92,5 +92,44 @@ namespace Buoi02_WebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+
+        [HttpPost]
+        public IActionResult CreateHangHoa([FromForm] HangHoaRequest model, IFormFile myFile)
+        {
+            var hangHoa = new HangHoa
+            {
+                TenHh = model.TenHh,
+                DonGia = model.DonGia,
+                MaLoai = model.MaLoai,
+                MaNcc = model.MaNcc,
+                NgaySx = model.NgaySX
+            };
+
+            if (myFile == null)
+            {
+                return BadRequest();
+            }
+            //chỉ định đường dẫn file lưu
+            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Hinh", myFile.FileName);
+
+            try
+            {
+                using (var file = new FileStream(fullPath, FileMode.Create))
+                {
+                    myFile.CopyTo(file);
+                }
+                hangHoa.Hinh = myFile.FileName;
+                _context.Add(hangHoa);
+                _context.SaveChanges();
+
+                return StatusCode(StatusCodes.Status201Created, hangHoa);
+                //return Ok(hangHoa);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }

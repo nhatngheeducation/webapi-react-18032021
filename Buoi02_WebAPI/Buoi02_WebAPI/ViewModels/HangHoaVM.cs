@@ -12,4 +12,13 @@ namespace Buoi02_WebAPI.ViewModels
         public string Hinh { get; set; }
         public double? GiaBan { get; set; }
     }
+
+    public class HangHoaRequest
+    {
+        public string TenHh { get; set; }
+        public string MaNcc { get; set; }
+        public int MaLoai { get; set; }
+        public double DonGia { get; set; }
+        public DateTime NgaySX { get; set; }
+    }
 }

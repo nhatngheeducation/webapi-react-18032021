@@ -6,6 +6,7 @@ using Buoi02_WebAPI.Models;
 using Buoi02_WebAPI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Buoi02_WebAPI.Controllers
 {
@@ -41,7 +42,7 @@ namespace Buoi02_WebAPI.Controllers
             var trans = _context.Database.BeginTransaction();
             try
             {
-                _context.Add(donHang);
+                _context.Add(hoaDon);
                 _context.SaveChanges();
 
                 // tạo chi tiết hóa đơn
@@ -68,7 +69,7 @@ namespace Buoi02_WebAPI.Controllers
                     Data = hoaDon.MaHd
                 });
             }
-            catch
+            catch(Exception ex)
             {
                 trans.Rollback();
                 return Ok(new ApiResponseModel { 
@@ -76,6 +77,38 @@ namespace Buoi02_WebAPI.Controllers
                     Message = "Tạo mới hóa đơn không thành công"
                 });
             }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetInvoice(int id)
+        {
+            var hoaDon = await _context.HoaDon
+                .Include(hd => hd.MaKhNavigation)
+                .Include(hd => hd.ChiTietHd)
+                .ThenInclude(cthd => cthd.MaHhNavigation)
+                .SingleOrDefaultAsync(hd => hd.MaHd == id);
+            if(hoaDon == null)
+            {
+                return NotFound();
+            }
+            var result = new DonHangResponse {
+                MaHd = hoaDon.MaHd, NguoiNhan = hoaDon.HoTen,
+                DiaChiGiao = hoaDon.DiaChi, NgayDat = hoaDon.NgayDat, TrangThai = hoaDon.TrangThai,
+                NguoiMua = hoaDon.MaKhNavigation.HoTen
+            };
+            //thêm data cho hàng hóa
+            foreach(var chiTiet in hoaDon.ChiTietHd)
+            {
+                result.HangHoa.Add(new ChiTietDonHang
+                {
+                    MaHh = chiTiet.MaHh,
+                    SoLuong = chiTiet.SoLuong,
+                    DonGia = chiTiet.DonGia,
+                    TenHh = chiTiet.MaHhNavigation.TenHh
+                });
+            }
+
+            return Ok(result);
         }
     }
 }
