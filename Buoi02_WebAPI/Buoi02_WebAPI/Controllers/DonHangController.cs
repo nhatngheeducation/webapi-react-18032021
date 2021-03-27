@@ -39,19 +39,19 @@ namespace Buoi02_WebAPI.Controllers
                 TrangThai = 0//mới đặt
             };
 
-            var trans = _context.Database.BeginTransaction();
+            var trans = await _context.Database.BeginTransactionAsync();
             try
             {
-                _context.Add(hoaDon);
-                _context.SaveChanges();
+                await _context.AddAsync(hoaDon);
+                await _context.SaveChangesAsync();
 
                 // tạo chi tiết hóa đơn
                 foreach (var chitiet in donHang.HangHoa)
                 {
-                    var hangHoa = _context.HangHoa.SingleOrDefault(hh => hh.MaHh == chitiet.MaHH);
+                    var hangHoa = await _context.HangHoa.SingleOrDefaultAsync(hh => hh.MaHh == chitiet.MaHH);
                     if (hangHoa != null)
                     {
-                        _context.Add(new ChiTietHd { 
+                        await _context.AddAsync(new ChiTietHd { 
                             MaHd = hoaDon.MaHd,
                             MaHh = hangHoa.MaHh,
                             SoLuong = chitiet.SoLuong,
@@ -60,18 +60,18 @@ namespace Buoi02_WebAPI.Controllers
                         });
                     }
                 }
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
-                trans.Commit();
+                await trans.CommitAsync();
                 return Ok(new ApiResponseModel
                 {
                     Success = true,
                     Data = hoaDon.MaHd
                 });
             }
-            catch(Exception ex)
+            catch
             {
-                trans.Rollback();
+                await trans.RollbackAsync();
                 return Ok(new ApiResponseModel { 
                     Success = false,
                     Message = "Tạo mới hóa đơn không thành công"
@@ -82,33 +82,44 @@ namespace Buoi02_WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetInvoice(int id)
         {
-            var hoaDon = await _context.HoaDon
-                .Include(hd => hd.MaKhNavigation)
-                .Include(hd => hd.ChiTietHd)
-                .ThenInclude(cthd => cthd.MaHhNavigation)
-                .SingleOrDefaultAsync(hd => hd.MaHd == id);
-            if(hoaDon == null)
+            try
             {
-                return NotFound();
-            }
-            var result = new DonHangResponse {
-                MaHd = hoaDon.MaHd, NguoiNhan = hoaDon.HoTen,
-                DiaChiGiao = hoaDon.DiaChi, NgayDat = hoaDon.NgayDat, TrangThai = hoaDon.TrangThai,
-                NguoiMua = hoaDon.MaKhNavigation.HoTen
-            };
-            //thêm data cho hàng hóa
-            foreach(var chiTiet in hoaDon.ChiTietHd)
-            {
-                result.HangHoa.Add(new ChiTietDonHang
+                var hoaDon = await _context.HoaDon
+                    .Include(hd => hd.MaKhNavigation)
+                    .Include(hd => hd.ChiTietHd)
+                    .ThenInclude(cthd => cthd.MaHhNavigation)
+                    .SingleOrDefaultAsync(hd => hd.MaHd == id);
+                if (hoaDon == null)
                 {
-                    MaHh = chiTiet.MaHh,
-                    SoLuong = chiTiet.SoLuong,
-                    DonGia = chiTiet.DonGia,
-                    TenHh = chiTiet.MaHhNavigation.TenHh
-                });
-            }
+                    return NotFound();
+                }
+                var result = new DonHangResponse
+                {
+                    MaHd = hoaDon.MaHd,
+                    NguoiNhan = hoaDon.HoTen,
+                    DiaChiGiao = hoaDon.DiaChi,
+                    NgayDat = hoaDon.NgayDat,
+                    TrangThai = hoaDon.TrangThai,
+                    NguoiMua = hoaDon.MaKhNavigation.HoTen
+                };
+                //thêm data cho hàng hóa
+                foreach (var chiTiet in hoaDon.ChiTietHd)
+                {
+                    result.HangHoa.Add(new ChiTietDonHang
+                    {
+                        MaHh = chiTiet.MaHh,
+                        SoLuong = chiTiet.SoLuong,
+                        DonGia = chiTiet.DonGia,
+                        TenHh = chiTiet.MaHhNavigation.TenHh
+                    });
+                }
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

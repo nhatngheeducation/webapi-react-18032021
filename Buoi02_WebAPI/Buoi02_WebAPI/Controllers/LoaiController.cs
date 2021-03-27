@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Buoi02_WebAPI.Models;
-using Microsoft.AspNetCore.Http;
+using Buoi02_WebAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace Buoi02_WebAPI.Controllers
 {
@@ -69,7 +68,7 @@ namespace Buoi02_WebAPI.Controllers
             {
                 return BadRequest();
             }
-            var loaiDb = _context.Loai.SingleOrDefault(lo => lo.MaLoai == id);
+            var loaiDb = await _context.Loai.SingleOrDefaultAsync(lo => lo.MaLoai == id);
             if (loaiDb == null)
             {
                 return NotFound();
@@ -84,7 +83,7 @@ namespace Buoi02_WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveLoai(int id)
         {
-            var loaiDb = _context.Loai.SingleOrDefault(lo => lo.MaLoai == id);
+            var loaiDb = await _context.Loai.SingleOrDefaultAsync(lo => lo.MaLoai == id);
             if (loaiDb == null)
             {
                 return NotFound();
@@ -96,7 +95,7 @@ namespace Buoi02_WebAPI.Controllers
             }
             catch(Exception ex)
             {
-                return Ok(new { 
+                return Ok(new ApiResponseModel { 
                     Success = false,
                     Message = ex.InnerException.Message
                 });

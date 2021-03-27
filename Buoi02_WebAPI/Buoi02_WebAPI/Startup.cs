@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Buoi02_WebAPI.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Buoi02_WebAPI
 {
@@ -29,10 +23,20 @@ namespace Buoi02_WebAPI
         {
             services.AddControllers();
 
-            services.AddDbContext<NhatNgheWebAPIContext>(option => {
+            services.AddDbContext<NhatNgheWebAPIContext>(option =>
+            {
                 option.UseSqlServer(Configuration.GetConnectionString("NNWebApi"));
             });
 
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "NhatNghe WebAPI",
+                    Version = "v1",
+                    Description = "Sample API for NhatNgheWebAPI",
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +51,14 @@ namespace Buoi02_WebAPI
 
             //Cho phép truy xuất trực tiếp thư mục tĩnh
             app.UseStaticFiles();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Ban hang V1");
+            });
 
             app.UseRouting();
 
