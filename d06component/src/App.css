@@ -1,3 +1,9 @@
+.todo-item{
+    color:red;
+}
+.todo-item:hover {
+    box-shadow: 0 0 7px blue;
+}
 .App {
   text-align: center;
 }
