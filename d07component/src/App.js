@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import { About } from './components/About';
 import { Contact } from './components/Contact';
+import { TodoList } from './components/TodoList';
 
 function App() {
     const [hoTen, setHoTen] = useState('Nhất Nghệ');
@@ -49,12 +50,16 @@ function App() {
                         <li>
                             <Link to="/contact">Danh bạ</Link>
                         </li>
+                        <li>
+                            <Link to="/todos">QL Công việc</Link>
+                        </li>
                     </ul>
                 </div>
 
                 { /* Khai báo định tuyến*/}
                 <Switch>
                     <Route path="/about" component={About} />
+                    <Route path="/todos" component={TodoList} />
                     <Route path="/contact">
                         <Contact />
                         <About />
@@ -67,33 +72,7 @@ function App() {
             </Router>
 
 
-            <hr />
-            <h2>Danh sách công việc</h2>
-            {items.map((item, idx) => (
-                <div className="todo-item" key={idx} >
-                    {item.text}
-                    {item.done == false ? (
-                        <button className="btn-complete"
-                            onClick={() => handleComplete(idx)}>
-                            Hoàn thành</button>
-                    ) : ''}
-                </div>
-            ))}
-            {/* {items.map(item => {
-                let item_kq = item.text.toUpperCase();
-                return (
-                    <li>{item_kq}</li>
-                );
-            })} */}
-            <div>
-                Nhập công việc:
-                <input value={value} onChange={e => setValue(e.target.value)} />
-                <button onClick={handleAddItem}>Thêm</button>
-            </div>
-            <div>
-                Nhập tên:
-                <input onChange={e => handleChange(e.target.value)} />
-            </div>
+            <hr />            
             <Demo name={hoTen} />
             <Hello name={hoTen} />
         </div>
