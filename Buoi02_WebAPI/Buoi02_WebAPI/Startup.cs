@@ -21,6 +21,16 @@ namespace Buoi02_WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(option =>
+            {
+                option.AddPolicy(name: "MyAPI", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
+
             services.AddControllers();
 
             services.AddDbContext<NhatNgheWebAPIContext>(option =>
@@ -37,6 +47,7 @@ namespace Buoi02_WebAPI
                     Description = "Sample API for NhatNgheWebAPI",
                 });
             });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +71,7 @@ namespace Buoi02_WebAPI
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Ban hang V1");
             });
 
+            app.UseCors("MyAPI");
             app.UseRouting();
 
             app.UseAuthorization();

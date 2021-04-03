@@ -8,6 +8,8 @@ import {
 import { About } from './components/About';
 import { Contact } from './components/Contact';
 import { TodoList } from './components/TodoList';
+import { DemoHook } from './components/DemoHook';
+import { Loai } from './components/loai/Loai';
 
 function App() {
     const [hoTen, setHoTen] = useState('Nhất Nghệ');
@@ -58,6 +60,8 @@ function App() {
 
                 { /* Khai báo định tuyến*/}
                 <Switch>
+                    <Route path="/admin/loai" component={Loai} />
+                    <Route path="/demohook" component={DemoHook} />
                     <Route path="/about" component={About} />
                     <Route path="/todos" component={TodoList} />
                     <Route path="/contact">
