@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoMapper;
 using Buoi02_WebAPI.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,7 +48,8 @@ namespace Buoi02_WebAPI
                     Description = "Sample API for NhatNgheWebAPI",
                 });
             });
-            
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -15,7 +15,7 @@ namespace Buoi02_WebAPI.ViewModels
                 );
             if (File.Exists(fullUrl))
             {
-                return $"{request.Scheme}://{request.Host}/Hinh/HangHoa/{fileName}";
+                return $"{request.Scheme}://{request.Host}/Hinh/{folder}/{fileName}";
             }
             return $"{request.Scheme}://{request.Host}/Hinh/no-image.png";
         }

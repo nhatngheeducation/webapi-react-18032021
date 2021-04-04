@@ -28,9 +28,20 @@ namespace Buoi02_WebAPI.Controllers
 
         [HttpGet("{id}")]
         // host/api/Loai/1
-        public async Task<Loai> GeyById(int id)
+        public async Task<IActionResult> GeyById(int id)
         {
-            return await _context.Loai.SingleOrDefaultAsync(lo => lo.MaLoai == id);
+            var loai = await _context.Loai.SingleOrDefaultAsync(lo => lo.MaLoai == id);
+            if(loai == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(new LoaiVM
+                {
+                    MaLoai = loai.MaLoai, TenLoai = loai.TenLoai, MoTa = loai.MoTa, Hinh = MyTools.GetRealUrl("Loai", loai.Hinh, HttpContext.Request)
+                });
+            }
         }
 
         [HttpGet("search/{keyword}")]
