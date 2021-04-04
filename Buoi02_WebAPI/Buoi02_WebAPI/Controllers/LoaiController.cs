@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Buoi02_WebAPI.Models;
 using Buoi02_WebAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -14,16 +15,23 @@ namespace Buoi02_WebAPI.Controllers
     public class LoaiController : ControllerBase
     {
         private readonly NhatNgheWebAPIContext _context;
+        private readonly IMapper _mapper;
 
-        public LoaiController(NhatNgheWebAPIContext db)
+        public LoaiController(NhatNgheWebAPIContext db, IMapper mapper)
         {
             _context = db;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Loai>> GetAll()
+        public async Task<IEnumerable<LoaiVM>> GetAll()
         {
-            return await _context.Loai.ToListAsync();
+            var data = _mapper.Map<List<LoaiVM>>(await _context.Loai.ToListAsync());
+            foreach (var loaiVm in data)
+            {
+                loaiVm.Hinh = MyTools.GetRealUrl("Loai", loaiVm.Hinh, HttpContext.Request);
+            }
+            return data;
         }
 
         [HttpGet("{id}")]
@@ -31,16 +39,15 @@ namespace Buoi02_WebAPI.Controllers
         public async Task<IActionResult> GeyById(int id)
         {
             var loai = await _context.Loai.SingleOrDefaultAsync(lo => lo.MaLoai == id);
-            if(loai == null)
+            if (loai == null)
             {
                 return NotFound();
             }
             else
             {
-                return Ok(new LoaiVM
-                {
-                    MaLoai = loai.MaLoai, TenLoai = loai.TenLoai, MoTa = loai.MoTa, Hinh = MyTools.GetRealUrl("Loai", loai.Hinh, HttpContext.Request)
-                });
+                var loaiVm = _mapper.Map<LoaiVM>(loai);
+                loaiVm.Hinh = MyTools.GetRealUrl("Loai", loai.Hinh, HttpContext.Request);
+                return Ok(loaiVm);
             }
         }
 
@@ -49,7 +56,12 @@ namespace Buoi02_WebAPI.Controllers
         {
             try
             {
-                return Ok(await _context.Loai.Where(lo => lo.TenLoai.Contains(keyword)).ToListAsync());
+                var data = _mapper.Map<List<LoaiVM>>(await _context.Loai.Where(lo => lo.TenLoai.Contains(keyword)).ToListAsync());
+                foreach (var loaiVm in data)
+                {
+                    loaiVm.Hinh = MyTools.GetRealUrl("Loai", loaiVm.Hinh, HttpContext.Request);
+                }
+                return Ok(data);
             }
             catch
             {
@@ -58,13 +70,15 @@ namespace Buoi02_WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateLoai(Loai loai)
+        public async Task<IActionResult> CreateLoai(LoaiVM loaiVm)
         {
             try
             {
+                var loai = _mapper.Map<Loai>(loaiVm);
                 await _context.AddAsync(loai);
                 await _context.SaveChangesAsync();
-                return this.Created($"/{loai.MaLoai}", loai);
+                loaiVm.MaLoai = loai.MaLoai;
+                return this.Created($"/{loai.MaLoai}", loaiVm);
             }
             catch
             {
@@ -73,7 +87,7 @@ namespace Buoi02_WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateLoai(int id, Loai loai)
+        public async Task<IActionResult> UpdateLoai(int id, LoaiVM loai)
         {
             if (id != loai.MaLoai)
             {
@@ -99,14 +113,16 @@ namespace Buoi02_WebAPI.Controllers
             {
                 return NotFound();
             }
-            try{
+            try
+            {
                 _context.Remove(loaiDb);
                 await _context.SaveChangesAsync();
                 return NoContent();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return Ok(new ApiResponseModel { 
+                return Ok(new ApiResponseModel
+                {
                     Success = false,
                     Message = ex.InnerException.Message
                 });

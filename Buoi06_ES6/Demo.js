@@ -1,7 +1,5 @@
 ﻿//ES6 - ECMA2015
 
-import { func } from "prop-types";
-
 //1. Phân biệt let, var, const
 //let: biến, phạm vi block {}
 //var: global ==> ko nên xài
@@ -39,19 +37,37 @@ cars.map(item => {
 
 
 //4. Rest parameters (param có dấu 3 chấm)
-//const sum = (...args) => {
-//    let total = 0;
-//    for (let item of args) {
-//        total += item;
-//    }
-//    return total;
-//}
-//console.log(sum(1))
-//console.log(sum(1,9,11))
-//console.log(sum(1, 9, 11, 19, 31))
+const sum = (...args) => {
+    let total = 0;
+    for (let item of args) {
+        total += item;
+    }
+    return total;
+}
+console.log(sum(1))
+console.log(sum(1,9,11))
+console.log(sum(1, 9, 11, 19, 31))
 
 //5. ES6 Literal (chuỗi có format)
 hoTen = "Nhất Nghệ"
 console.log(`Xin chào bạn ${hoTen}`)
 console.log(`Bạn ${2021 - 2003} tuổi`)
 
+//6. Destructing (object/array)
+let ngayThanhLap = [10, 3, 2003]
+let [ngay, thang, nam] = ngayThanhLap;
+console.log(ngay)
+console.log(thang)
+console.log(nam)
+let [, month,] = ngayThanhLap;
+console.log("Thang:", month)
+
+let hocVien = {
+    "ten": "Nhất Nghệ",
+    "tuoi": 18,
+    "conDiHoc": true
+}
+let { ten: tengi, tuoi, conDiHoc } = hocVien;
+console.log(tengi)
+console.log(tuoi)
+console.log(conDiHoc)

@@ -29,10 +29,6 @@ export function TodoList() {
     }
     return (
         <div className="App">
-            
-
-
-            <hr />
             <h2>Danh sách công việc</h2>
             {items.map((item, idx) => (
                 <div className="todo-item" key={idx} >

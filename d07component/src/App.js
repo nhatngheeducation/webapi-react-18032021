@@ -43,40 +43,44 @@ function App() {
                 { /* Menu */}
                 <div>
                     <ul>
-                        <li>
+                        <li className="menu-item">
                             <Link to="/" style={{ textDecoration: 'none' }}>Trang chủ</Link>
                         </li>
-                        <li>
+                        <li className="menu-item">
                             <Link to="/about">Giới thiệu</Link>
                         </li>
-                        <li>
+                        <li className="menu-item">
                             <Link to="/contact">Danh bạ</Link>
                         </li>
-                        <li>
+                        <li className="menu-item">
                             <Link to="/todos">QL Công việc</Link>
+                        </li>
+                        <li className="menu-item">
+                            <Link to="/admin/loai">QL Loại</Link>
                         </li>
                     </ul>
                 </div>
-
+                <hr />
                 { /* Khai báo định tuyến*/}
-                <Switch>
-                    <Route path="/admin/loai" component={Loai} />
-                    <Route path="/demohook" component={DemoHook} />
-                    <Route path="/about" component={About} />
-                    <Route path="/todos" component={TodoList} />
-                    <Route path="/contact">
-                        <Contact />
-                        <About />
-                    </Route>
-                    <Route path="/">
-                        <h2>TRANG CHỦ</h2>
-                    </Route>
-
-                </Switch>
+                <div style={{ minHeight: 500, padding: 5 }}>
+                    <Switch>
+                        <Route path="/admin/loai" component={Loai} />
+                        <Route path="/demohook" component={DemoHook} />
+                        <Route path="/about" component={About} />
+                        <Route path="/todos" component={TodoList} />
+                        <Route path="/contact">
+                            <Contact />
+                            <About />
+                        </Route>
+                        <Route path="/">
+                            <h2>TRANG CHỦ</h2>
+                        </Route>
+                    </Switch>
+                </div>
             </Router>
 
 
-            <hr />            
+            <hr />
             <Demo name={hoTen} />
             <Hello name={hoTen} />
         </div>

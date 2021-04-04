@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react'
 export default {
-    "ten": "Nhất Nghệ", "nam":2003
+    "ten": "Nhất Nghệ", "nam": 2003
 }
 export class Demo extends Component {
     constructor(props) {
@@ -9,7 +9,7 @@ export class Demo extends Component {
     render() {
         return (
             <div>
-                Hello DEMO {this.props.name}
+                Copyright&copy; 2021 {this.props.name}
             </div>
         )
     }

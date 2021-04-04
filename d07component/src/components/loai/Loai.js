@@ -1,5 +1,5 @@
 ﻿//src/components/loai/Loai.js
-
+import '../assests/loai.css'
 import { useState, useEffect } from "react";
 
 export const Loai = () => {
@@ -17,10 +17,12 @@ export const Loai = () => {
     }
 
     useEffect(() => {
-        let myInterval = setInterval(() => { getLoai() }, 10000);
+        getLoai();
 
-        return () => clearInterval(myInterval);
-        
+        // let myInterval = setInterval(() => { getLoai() }, 10000);
+
+        // return () => clearInterval(myInterval);
+
     }, []);
 
     const getLoaiById = (id, item) => {
@@ -41,14 +43,15 @@ export const Loai = () => {
             {dataLoai.length == 0 ? (
                 <h3>No data</h3>
             ) : (
-                    dataLoai.map((item, index) => (
-                        <div>
-                            {item.tenLoai} - {item.maLoai}
-                            <button onClick={() => getLoaiById(item.maLoai, item)}>Sửa</button>
-                        </div>
-                    )
-                    )
-                )}
+                dataLoai.map((item, index) => (
+                    <div class="item-loai">
+                        {item.tenLoai} - {item.maLoai}
+                        <button onClick={() => getLoaiById(item.maLoai, item)} className="item-loai-edit">
+                            Sửa</button>
+                    </div>
+                )
+                )
+            )}
 
             {isEdit && (
                 <div>

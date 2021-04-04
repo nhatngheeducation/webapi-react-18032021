@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Buoi02_WebAPI.Models;
 using Buoi02_WebAPI.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -17,11 +16,13 @@ namespace Buoi02_WebAPI.Controllers
     public class HangHoaController : ControllerBase
     {
         private readonly NhatNgheWebAPIContext _context;
+        private readonly IMapper _mapper;
         private readonly int SO_PHAN_TU_MOI_TRANG;
 
-        public HangHoaController(NhatNgheWebAPIContext ctx, IConfiguration config)
+        public HangHoaController(NhatNgheWebAPIContext ctx, IConfiguration config, IMapper mapper)
         {
             _context = ctx;
+            _mapper = mapper;
             SO_PHAN_TU_MOI_TRANG = int.Parse(config["PagingConfig:NumberOfRecord"]);
         }
 
@@ -111,7 +112,7 @@ namespace Buoi02_WebAPI.Controllers
                 return BadRequest();
             }
             //chỉ định đường dẫn file lưu
-            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Hinh", myFile.FileName);
+            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Hinh", "HangHoa", myFile.FileName);
 
             try
             {

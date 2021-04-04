@@ -13,7 +13,6 @@ namespace Buoi02_WebAPI.ViewModels
         [MaxLength(50)]
         public string TenLoai { get; set; }
         public string MoTa { get; set; }
-        [MaxLength(50)]
         public string Hinh { get; set; }
     }
 }
