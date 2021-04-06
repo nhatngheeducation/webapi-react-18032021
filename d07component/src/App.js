@@ -10,6 +10,7 @@ import { Contact } from './components/Contact';
 import { TodoList } from './components/TodoList';
 import { DemoHook } from './components/DemoHook';
 import { Loai } from './components/loai/Loai';
+import { UploadFile } from './components/UploadFile';
 
 function App() {
     const [hoTen, setHoTen] = useState('Nhất Nghệ');
@@ -64,6 +65,7 @@ function App() {
                 { /* Khai báo định tuyến*/}
                 <div style={{ minHeight: 500, padding: 5 }}>
                     <Switch>
+                        <Route path="/upload" component={UploadFile} />
                         <Route path="/admin/loai" component={Loai} />
                         <Route path="/demohook" component={DemoHook} />
                         <Route path="/about" component={About} />
