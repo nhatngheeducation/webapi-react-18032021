@@ -10,6 +10,7 @@ import { Contact } from './components/Contact';
 import { TodoList } from './components/TodoList';
 import { DemoHook } from './components/DemoHook';
 import { Loai } from './components/loai/Loai';
+import { ThemHangHoa } from './components/hanghoa/ThemHangHoa';
 import { UploadFile } from './components/UploadFile';
 
 function App() {
@@ -66,6 +67,7 @@ function App() {
                 <div style={{ minHeight: 500, padding: 5 }}>
                     <Switch>
                         <Route path="/upload" component={UploadFile} />
+                        <Route path="/admin/hanghoa/them" component={ThemHangHoa} />
                         <Route path="/admin/loai" component={Loai} />
                         <Route path="/demohook" component={DemoHook} />
                         <Route path="/about" component={About} />
