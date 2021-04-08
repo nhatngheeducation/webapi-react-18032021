@@ -11,6 +11,7 @@ import { TodoList } from './components/TodoList';
 import { DemoHook } from './components/DemoHook';
 import { Loai } from './components/loai/Loai';
 import { ThemHangHoa } from './components/hanghoa/ThemHangHoa';
+import { DanhSachHangHoa } from './components/hanghoa/DanhSachHangHoa';
 import { UploadFile } from './components/UploadFile';
 
 function App() {
@@ -60,6 +61,9 @@ function App() {
                         <li className="menu-item">
                             <Link to="/admin/loai">QL Loại</Link>
                         </li>
+                        <li className="menu-item">
+                            <Link to="/admin/hanghoa/danhsach">Hàng hóa</Link>
+                        </li>
                     </ul>
                 </div>
                 <hr />
@@ -68,6 +72,7 @@ function App() {
                     <Switch>
                         <Route path="/upload" component={UploadFile} />
                         <Route path="/admin/hanghoa/them" component={ThemHangHoa} />
+                        <Route path="/admin/hanghoa/danhsach" component={DanhSachHangHoa} />
                         <Route path="/admin/loai" component={Loai} />
                         <Route path="/demohook" component={DemoHook} />
                         <Route path="/about" component={About} />
