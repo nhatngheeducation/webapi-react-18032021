@@ -40,7 +40,7 @@ export const Loai = () => {
     return (
         <div>
             <h2>Quản lý Loại</h2>
-            {dataLoai.length == 0 ? (
+            {dataLoai.length === 0 ? (
                 <h3>No data</h3>
             ) : (
                 dataLoai.map((item, index) => (

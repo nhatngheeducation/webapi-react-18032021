@@ -55,7 +55,7 @@ export const ThemHangHoa = () => {
         const fileTypes = ['image/png', 'image/jpg', 'image/gif', 'image/jpeg'];
 
         let file = e.target.files;
-        if (fileTypes.every(extension => file[0].type != extension)) {
+        if (fileTypes.every(extension => file[0].type !== extension)) {
             setErrorMessage(`Không support loại file ${file[0].type} này.`);
         } else {
             setMyFile(file[0]);
