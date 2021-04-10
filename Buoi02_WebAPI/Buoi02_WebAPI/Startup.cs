@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Text;
 using AutoMapper;
 using Buoi02_WebAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Buoi02_WebAPI
 {
@@ -50,6 +53,27 @@ namespace Buoi02_WebAPI
             });
 
             services.AddAutoMapper(typeof(Startup));
+
+            var secretKey = Configuration["AppSettings:SecretKey"];
+            var keyBytes = Encoding.UTF8.GetBytes(secretKey);
+
+            //Authen dang JWT
+            services.AddAuthentication(opt => {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(opt => {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    //có dùng server service khác làm nhiệm vụ Authen ko? Auth0.com
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    
+                    //ký tá vào token
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +88,7 @@ namespace Buoi02_WebAPI
 
             //Cho phép truy xuất trực tiếp thư mục tĩnh
             app.UseStaticFiles();
+            app.UseAuthentication();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

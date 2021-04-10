@@ -2,15 +2,21 @@
 import '../assests/hanghoa.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { actionAddToCart } from '../../actions/index';
+import { connect } from 'react-redux';
 
 export const HangHoa = (props) => {
-    const { data } = props;
+    const { data, handleAddToCart } = props;
     return (
         <div class="hanghoa">
             <div className="hh-ten">{data.tenHh}</div>
             <img className="hh-hinh" src={data.hinh} />
             <div className="hh-gia">{data.giaBan} $</div>
-            <button className="hh-mua">Mua</button>
+            <button className="hh-mua"
+                onClick={() => {
+                    handleAddToCart(data);
+                }}
+            >Mua</button>
         </div>
     )
 }
@@ -60,3 +66,19 @@ export const DanhSachHangHoa = () => {
         </div>
     )
 }
+
+const mapStateToProps = state => {
+    return {
+        products: state.products
+    }
+}
+
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        handleAddToCart: (product) => {
+            dispatch(actionAddToCart(product, 1));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HangHoa);

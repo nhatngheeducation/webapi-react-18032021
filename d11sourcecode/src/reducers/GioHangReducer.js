@@ -11,6 +11,7 @@ export const Cart = (state = initCartValue, action) => {
     var { product, quantity } = action;
     switch (action.type) {
         case Types.ADD_PRODUCT_TO_CART:
+            console.log("AAAA")
             index = findProductInCart(state, product);
             if (index > -1) {
                 state[index].quantity += quantity;

@@ -69,3 +69,8 @@ services.AddCors(option =>
 ```cs
 app.UseCors("MyAPI");
 ```
+
+## 4. Authentication
+Cài
+Microsoft.AspNetCore.Authentication.JwtBearer
+chú ý version (3.x/5.x)
