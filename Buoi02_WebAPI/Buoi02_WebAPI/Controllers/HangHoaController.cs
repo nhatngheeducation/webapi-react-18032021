@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Buoi02_WebAPI.Models;
 using Buoi02_WebAPI.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace Buoi02_WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class HangHoaController : ControllerBase
     {
         private readonly NhatNgheWebAPIContext _context;

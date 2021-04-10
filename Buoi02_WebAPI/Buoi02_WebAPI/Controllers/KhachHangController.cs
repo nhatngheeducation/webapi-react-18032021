@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Buoi02_WebAPI.Models;
 using Buoi02_WebAPI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Buoi02_WebAPI.Controllers
 {
@@ -14,10 +19,13 @@ namespace Buoi02_WebAPI.Controllers
     public class KhachHangController : ControllerBase
     {
         private readonly NhatNgheWebAPIContext _context;
+        private readonly byte[] _KeyBytes;
 
-        public KhachHangController(NhatNgheWebAPIContext ctx)
+        public KhachHangController(NhatNgheWebAPIContext ctx, IConfiguration configuration)
         {
             _context = ctx;
+            var secretKey = configuration["AppSettings:SecretKey"];
+            _KeyBytes = Encoding.UTF8.GetBytes(secretKey);
         }
 
         [HttpPost]
@@ -34,10 +42,29 @@ namespace Buoi02_WebAPI.Controllers
                 });
             }
 
+            //thông tin đặc trưng của user
+            var claims = new Claim[]
+            {
+                new Claim(ClaimTypes.Name, khachHang.HoTen),
+                new Claim(ClaimTypes.Email, khachHang.Email),
+                new Claim("CustomerID", khachHang.MaKh),
+                new Claim(ClaimTypes.Role, "KhachHang")
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDesc = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddMinutes(30),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_KeyBytes), SecurityAlgorithms.HmacSha512)
+            };
+            var token = tokenHandler.CreateToken(tokenDesc);
+
             return Ok(new ApiResponseModel
             {
                 Success = true,
-                Message = "Đăng nhập thành công"
+                Message = "Đăng nhập thành công",
+                Data = tokenHandler.WriteToken(token)
             });
         }
     }
