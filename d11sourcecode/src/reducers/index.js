@@ -2,7 +2,7 @@
 import { combineReducers } from 'redux';
 import { Cart } from './GioHangReducer'
 
-const appReducers = combineReducers({
+export const appReducers = combineReducers({
     Cart
 });
-export default appReducers;
+//export default appReducers;

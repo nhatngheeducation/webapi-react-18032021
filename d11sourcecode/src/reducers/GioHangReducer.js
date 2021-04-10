@@ -6,33 +6,31 @@ let data = localStorage.getItem("GIOHANG");
 
 let initCartValue = data ? data : [];
 
-const Cart = (state = initCartValue, action) => {
+let index = -1;
+export const Cart = (state = initCartValue, action) => {
     var { product, quantity } = action;
     switch (action.type) {
         case Types.ADD_PRODUCT_TO_CART:
-            let index = findProductInCart(state, product);
+            index = findProductInCart(state, product);
             if (index > -1) {
                 state[index].quantity += quantity;
             } else {
                 state.push({ product, quantity });
             }            
             return [...state];
-            break;
         case Types.UPDATE_PRODUCT_IN_CART:
-            let index = findProductInCart(state, product);
+            index = findProductInCart(state, product);
             if (index > -1) {
                 state[index].quantity = quantity;
             } 
             return [...state];
-            break;
         case Types.REMOVE_PRODUCT_OUT_CART:
-            let index = findProductInCart(state, product);
+            index = findProductInCart(state, product);
             if (index > -1) {
                 state.slice(index, 1);
             }
             return [...state];
-            break;
-        default: return state; break;
+        default: return state;
     }
 }
 
@@ -49,9 +47,5 @@ const findProductInCart = (cart, productId) => {
     return index;
 }
 
-const addToCart = (product, quantity) => { }
-const updateCart = (product, quantity) => { }
-const removeProductOutCart = (product) => { }
 
-
-export default Cart;
+//export default Cart;
