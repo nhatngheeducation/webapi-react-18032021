@@ -14,7 +14,7 @@ namespace Buoi02_WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class HangHoaController : ControllerBase
     {
         private readonly NhatNgheWebAPIContext _context;
@@ -54,6 +54,7 @@ namespace Buoi02_WebAPI.Controllers
 
         [HttpGet("{id}")]
         // host/api/HangHoa/11
+        [Authorize(Roles = "VT003")]
         public async Task<IActionResult> GetHangHoa(int id)
         {
             var hangHoa = await _context.HangHoa
@@ -77,7 +78,7 @@ namespace Buoi02_WebAPI.Controllers
             if (myFile == null)
             {
                 return BadRequest();
-            }            
+            }
             //chỉ định đường dẫn file lưu
             var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Hinh", myFile.FileName);
 
@@ -97,9 +98,11 @@ namespace Buoi02_WebAPI.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost]        
         public IActionResult CreateHangHoa([FromForm] HangHoaRequest model, IFormFile myFile)
         {
+            //Check quyền
+
             var hangHoa = new HangHoa
             {
                 TenHh = model.TenHh,

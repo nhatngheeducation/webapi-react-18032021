@@ -9,6 +9,7 @@ using Buoi02_WebAPI.Models;
 using Buoi02_WebAPI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -31,7 +32,9 @@ namespace Buoi02_WebAPI.Controllers
         [HttpPost]
         public IActionResult Login(LoginVM model)
         {
-            var khachHang = _context.KhachHang.SingleOrDefault(kh => kh.MaKh == model.Username && kh.MatKhau == model.Password);
+            var khachHang = _context.KhachHang
+                .Include(kh => kh.PhanCong)
+                .SingleOrDefault(kh => kh.MaKh == model.Username && kh.MatKhau == model.Password);
 
             if(khachHang == null)
             {
@@ -43,13 +46,18 @@ namespace Buoi02_WebAPI.Controllers
             }
 
             //thông tin đặc trưng của user
-            var claims = new Claim[]
+            var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, khachHang.HoTen),
                 new Claim(ClaimTypes.Email, khachHang.Email),
-                new Claim("CustomerID", khachHang.MaKh),
-                new Claim(ClaimTypes.Role, "KhachHang")
+                new Claim("CustomerID", khachHang.MaKh)                
             };
+
+            //Add quyền cho token
+            foreach(var item in khachHang.PhanCong)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, item.MaVt));
+            }
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDesc = new SecurityTokenDescriptor
