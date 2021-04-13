@@ -54,9 +54,15 @@ namespace Buoi02_WebAPI.Controllers
 
         [HttpGet("{id}")]
         // host/api/HangHoa/11
-        [Authorize(Roles = "VT003")]
+        //[Authorize(Roles = "VT003")]
+        [Authorize]
         public async Task<IActionResult> GetHangHoa(int id)
         {
+            if(!User.IsInRole("VT001") || !User.IsInRole("VT003"))
+            {
+                return this.Forbid();
+            }
+
             var hangHoa = await _context.HangHoa
                 .SingleOrDefaultAsync(hh => hh.MaHh == id);
             if (hangHoa == null)

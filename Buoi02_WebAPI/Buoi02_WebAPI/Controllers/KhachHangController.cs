@@ -29,7 +29,7 @@ namespace Buoi02_WebAPI.Controllers
             _KeyBytes = Encoding.UTF8.GetBytes(secretKey);
         }
 
-        [HttpPost]
+        [HttpPost("/api/authen/login")]
         public IActionResult Login(LoginVM model)
         {
             var khachHang = _context.KhachHang

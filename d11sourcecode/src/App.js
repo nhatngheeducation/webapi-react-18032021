@@ -13,6 +13,7 @@ import { Loai } from './components/loai/Loai';
 import { ThemHangHoa } from './components/hanghoa/ThemHangHoa';
 import { DanhSachHangHoa } from './components/hanghoa/DanhSachHangHoa';
 import { UploadFile } from './components/UploadFile';
+import { Login } from './components/Login';
 
 function App() {
     const [hoTen, setHoTen] = useState('Nhất Nghệ');
@@ -64,12 +65,16 @@ function App() {
                         <li className="menu-item">
                             <Link to="/admin/hanghoa/danhsach">Hàng hóa</Link>
                         </li>
+                        <li className="menu-item">
+                            <Link to="/login">Đăng nhập</Link>
+                        </li>
                     </ul>
                 </div>
                 <hr />
                 { /* Khai báo định tuyến*/}
                 <div style={{ minHeight: 500, padding: 5 }}>
                     <Switch>
+                        <Route path="/login" component={Login} />
                         <Route path="/upload" component={UploadFile} />
                         <Route path="/admin/hanghoa/them" component={ThemHangHoa} />
                         <Route path="/admin/hanghoa/danhsach" component={DanhSachHangHoa} />
