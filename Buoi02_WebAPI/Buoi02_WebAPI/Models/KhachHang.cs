@@ -8,6 +8,7 @@ namespace Buoi02_WebAPI.Models
         public KhachHang()
         {
             HoaDon = new HashSet<HoaDon>();
+            PhanCong = new HashSet<PhanCong>();
         }
 
         public string MaKh { get; set; }
@@ -23,5 +24,6 @@ namespace Buoi02_WebAPI.Models
         public int VaiTro { get; set; }
 
         public virtual ICollection<HoaDon> HoaDon { get; set; }
+        public virtual ICollection<PhanCong> PhanCong { get; set; }
     }
 }

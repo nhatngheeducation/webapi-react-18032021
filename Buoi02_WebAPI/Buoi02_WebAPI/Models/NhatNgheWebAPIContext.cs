@@ -22,12 +22,14 @@ namespace Buoi02_WebAPI.Models
         public virtual DbSet<Loai> Loai { get; set; }
         public virtual DbSet<NguoiDung> NguoiDung { get; set; }
         public virtual DbSet<NhaCungCap> NhaCungCap { get; set; }
+        public virtual DbSet<PhanCong> PhanCong { get; set; }
         public virtual DbSet<VaiTro> VaiTro { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=.; Database=NhatNgheWebAPI; Integrated Security=true");
             }
         }
@@ -248,6 +250,32 @@ namespace Buoi02_WebAPI.Models
                 entity.Property(e => e.TenCongTy)
                     .IsRequired()
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<PhanCong>(entity =>
+            {
+                entity.HasKey(e => new { e.MaKh, e.MaVt });
+
+                entity.Property(e => e.MaKh)
+                    .HasColumnName("MaKH")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.MaVt)
+                    .HasColumnName("MaVT")
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.MaKhNavigation)
+                    .WithMany(p => p.PhanCong)
+                    .HasForeignKey(d => d.MaKh)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PhanCong_KhachHang");
+
+                entity.HasOne(d => d.MaVtNavigation)
+                    .WithMany(p => p.PhanCong)
+                    .HasForeignKey(d => d.MaVt)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PhanCong_VaiTro");
             });
 
             modelBuilder.Entity<VaiTro>(entity =>

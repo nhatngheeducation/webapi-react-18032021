@@ -74,3 +74,7 @@ app.UseCors("MyAPI");
 Cài
 Microsoft.AspNetCore.Authentication.JwtBearer
 chú ý version (3.x/5.x)
+
+
+### Phát sinh lại Database
+Scaffold-DbContext "Server=.; Database=NhatNgheWebAPI; Integrated Security=true" Microsoft.EntityFrameworkCore.Sqlserver -o Models -f
