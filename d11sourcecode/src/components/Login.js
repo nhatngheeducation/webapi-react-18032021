@@ -2,8 +2,11 @@
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { useState } from 'react';
 import { AuthenService } from '../services/AuthenService';
+import { useDispatch } from 'react-redux';
+import { actionLogin } from '../actions/index';
 
 export const Login = () => {
+    const dispatch = useDispatch();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const handleLogin = (e) => {
@@ -13,6 +16,7 @@ export const Login = () => {
                 console.log(result);
                 if (result.success === true) {
                     alert("Đăng nhập thành công");
+                    dispatch(actionLogin(username, username, result.data));
                 } else {
                     alert("Đăng nhập thất bại");
                 }

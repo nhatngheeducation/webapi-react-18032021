@@ -22,5 +22,6 @@ export const loginReducer = (state = initStateValue, action) => {
             state.userId = '';
             state.fullName = '';
             return [...state];
+        default: return state;
     }
 }
