@@ -14,8 +14,12 @@ import { ThemHangHoa } from './components/hanghoa/ThemHangHoa';
 import { DanhSachHangHoa } from './components/hanghoa/DanhSachHangHoa';
 import { UploadFile } from './components/UploadFile';
 import { Login } from './components/Login';
+import { useSelector } from 'react-redux';
 
 function App() {
+    const isLoggedIn = useSelector(state => state.User.isLoggedIn);
+    const fullName = useSelector(state => state.User.fullName);
+    
     const [hoTen, setHoTen] = useState('Nhất Nghệ');
     const handleChange = (value) => {
         console.log(value)
@@ -65,9 +69,14 @@ function App() {
                         <li className="menu-item">
                             <Link to="/admin/hanghoa/danhsach">Hàng hóa</Link>
                         </li>
-                        <li className="menu-item">
-                            <Link to="/login">Đăng nhập</Link>
-                        </li>
+                        {isLoggedIn ? (
+                            <span>Xin chào {fullName}</span>
+                        ) : (
+                            <li className="menu-item">
+                                <Link to="/login">Đăng nhập</Link>
+                            </li>
+                        )}
+                        
                     </ul>
                 </div>
                 <hr />

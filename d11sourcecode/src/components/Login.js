@@ -2,11 +2,14 @@
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { useState } from 'react';
 import { AuthenService } from '../services/AuthenService';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { actionLogin } from '../actions/index';
 
 export const Login = () => {
     const dispatch = useDispatch();
+    const appData = useSelector((state) => state);
+    console.log("appData", appData);
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const handleLogin = (e) => {

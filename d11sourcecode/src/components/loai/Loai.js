@@ -1,8 +1,12 @@
 ﻿//src/components/loai/Loai.js
 import '../assests/loai.css'
 import { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 
 export const Loai = () => {
+    const appData = useSelector((state) => state);
+    console.log("appData in Loai:", appData);
+
     const [dataLoai, setDataLoai] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [loaiObj, setLoaiObj] = useState({});
@@ -11,7 +15,6 @@ export const Loai = () => {
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 setDataLoai(data);
             });
     }

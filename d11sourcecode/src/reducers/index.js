@@ -4,6 +4,6 @@ import { Cart } from './GioHangReducer';
 import { loginReducer } from './AuthenReducer';
 
 export const appReducers = combineReducers({
-    Cart, loginReducer
+    Cart,
+    User: loginReducer
 });
-//export default appReducers;

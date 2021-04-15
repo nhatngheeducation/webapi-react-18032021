@@ -15,13 +15,13 @@ export const loginReducer = (state = initStateValue, action) => {
             state.token = action.payload.token;
             state.userId = action.payload.userId;
             state.fullName = action.payload.fullName;
-            return [...state];
+            return state;
         case Types.UserService.LOGOUT:
             state.isLoggedIn = false;
             state.token = null;
             state.userId = '';
             state.fullName = '';
-            return [...state];
+            return state;
         default: return state;
     }
 }
