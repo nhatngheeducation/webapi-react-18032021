@@ -8,12 +8,16 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const handleLogin = (e) => {
         e.preventDefault();
-        let result = AuthenService.login(username, password);
-        if (result.success === "true") {
-            alert("Đăng nhập thành công");
-        } else {
-            alert("Đăng nhập thất bại");
-        }
+        AuthenService.login(username, password)
+            .then(result => {
+                console.log(result);
+                if (result.success === true) {
+                    alert("Đăng nhập thành công");
+                } else {
+                    alert("Đăng nhập thất bại");
+                }
+            })
+            .catch(err => { console.log(err); });
     }
     return (
         <div>
