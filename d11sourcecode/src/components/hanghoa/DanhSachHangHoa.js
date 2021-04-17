@@ -3,10 +3,10 @@ import '../assests/hanghoa.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { actionAddToCart } from '../../actions/index';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 export const HangHoa = (props) => {
-    const { data, handleAddToCart } = props;
+    const { data } = props;
     return (
         <div class="hanghoa">
             <div className="hh-ten">{data.tenHh}</div>
@@ -14,7 +14,7 @@ export const HangHoa = (props) => {
             <div className="hh-gia">{data.giaBan} $</div>
             <button className="hh-mua"
                 onClick={() => {
-                    handleAddToCart(data);
+                    useDispatch(actionAddToCart(data, 1));
                 }}
             >Mua</button>
         </div>

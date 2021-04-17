@@ -19,7 +19,8 @@ import { useSelector } from 'react-redux';
 function App() {
     const isLoggedIn = useSelector(state => state.User.isLoggedIn);
     const fullName = useSelector(state => state.User.fullName);
-    
+    const myCart = useSelector(state => state.Cart);
+
     const [hoTen, setHoTen] = useState('Nhất Nghệ');
     const handleChange = (value) => {
         console.log(value)
@@ -54,7 +55,8 @@ function App() {
                         <li className="menu-item">
                             <Link to="/" style={{ textDecoration: 'none' }}>Trang chủ</Link>
                         </li>
-                        <li className="menu-item">
+                        { /*
+                         <li className="menu-item">
                             <Link to="/about">Giới thiệu</Link>
                         </li>
                         <li className="menu-item">
@@ -63,6 +65,8 @@ function App() {
                         <li className="menu-item">
                             <Link to="/todos">QL Công việc</Link>
                         </li>
+                         */}
+
                         <li className="menu-item">
                             <Link to="/admin/loai">QL Loại</Link>
                         </li>
@@ -72,11 +76,17 @@ function App() {
                         {isLoggedIn ? (
                             <span>Xin chào {fullName}</span>
                         ) : (
-                            <li className="menu-item">
-                                <Link to="/login">Đăng nhập</Link>
-                            </li>
-                        )}
-                        
+                                <li className="menu-item">
+                                    <Link to="/login">Đăng nhập</Link>
+                                </li>
+                            )}
+                        <li className="menu-item">
+                            <Link to="/giohang">
+                                Giỏ hàng
+                            </Link>
+                            {myCart.length} sp.
+                        </li>
+
                     </ul>
                 </div>
                 <hr />
