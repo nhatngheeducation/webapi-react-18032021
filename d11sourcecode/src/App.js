@@ -1,6 +1,6 @@
 ﻿import './App.css';
 import { Demo, Hello } from './components/Demo';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     BrowserRouter as Router,
     Route, Link, Switch
@@ -14,12 +14,18 @@ import { ThemHangHoa } from './components/hanghoa/ThemHangHoa';
 import { DanhSachHangHoa } from './components/hanghoa/DanhSachHangHoa';
 import { UploadFile } from './components/UploadFile';
 import { Login } from './components/Login';
-import { useSelector } from 'react-redux';
+import { Cart } from './components/Cart';
+import { useSelector, useDispatch } from 'react-redux';
 
 function App() {
+    const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.User.isLoggedIn);
     const fullName = useSelector(state => state.User.fullName);
     const myCart = useSelector(state => state.Cart);
+
+    //useEffect(() => {
+    //    console.log('Chage state');
+    //}, [dispatch]);
 
     const [hoTen, setHoTen] = useState('Nhất Nghệ');
     const handleChange = (value) => {
@@ -93,6 +99,7 @@ function App() {
                 { /* Khai báo định tuyến*/}
                 <div style={{ minHeight: 500, padding: 5 }}>
                     <Switch>
+                        <Route path="/giohang" component={Cart} />
                         <Route path="/login" component={Login} />
                         <Route path="/upload" component={UploadFile} />
                         <Route path="/admin/hanghoa/them" component={ThemHangHoa} />

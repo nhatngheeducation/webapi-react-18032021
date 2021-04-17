@@ -14,8 +14,8 @@ export const Cart = (state = initCartValue, action) => {
                 state[index].quantity += quantity;
             } else {
                 state.push({ product, quantity });
-            }
-            console.log(state);
+            }          
+            console.log("State before leave reducer: ", state);
             return state;
         case Types.UPDATE_PRODUCT_IN_CART:
             index = findProductInCart(state, product.maHh);
@@ -31,6 +31,7 @@ export const Cart = (state = initCartValue, action) => {
             return state;
         default: return state;
     }
+    
 }
 
 const findProductInCart = (cart, productId) => {
