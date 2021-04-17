@@ -1,7 +1,8 @@
 ﻿// src/reducers/GioHangReducer.js
 //Xử lý cập nhật state mới dựa vào action gửi qua + state cũ
 import * as Types from '../constants/Types';
-const initCartValue = [];
+const cartData = localStorage.getItem("mycart");
+const initCartValue = cartData ? JSON.parse(cartData) : [];
 
 let index = -1;
 export const Cart = (state = initCartValue, action) => {
@@ -16,18 +17,21 @@ export const Cart = (state = initCartValue, action) => {
                 state.push({ product, quantity });
             }          
             console.log("State before leave reducer: ", state);
+            localStorage.setItem("mycart", JSON.stringify(state));
             return state;
         case Types.UPDATE_PRODUCT_IN_CART:
             index = findProductInCart(state, product.maHh);
             if (index > -1) {
                 state[index].quantity = quantity;
-            } 
+            }
+            localStorage.setItem("mycart", JSON.stringify(state));
             return state;
         case Types.REMOVE_PRODUCT_OUT_CART:
             index = findProductInCart(state, product.maHh);
             if (index > -1) {
-                state.slice(index, 1);
+                state.splice(index, 1);
             }
+            localStorage.setItem("mycart", JSON.stringify(state));
             return state;
         default: return state;
     }
