@@ -3,19 +3,23 @@ import '../assests/hanghoa.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { actionAddToCart } from '../../actions/index';
-import { connect, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 export const HangHoa = (props) => {
+    const dispatch = useDispatch();
     const { data } = props;
+    const [qty, setQuantity] = useState(1);
     return (
         <div class="hanghoa">
             <div className="hh-ten">{data.tenHh}</div>
             <img className="hh-hinh" src={data.hinh} />
             <div className="hh-gia">{data.giaBan} $</div>
+            <input style={{ width: '35px' }} defaultValue="1" type="number" min="1"
+                onChange={(e) => setQuantity(parseInt(e.target.value))} />
             <button className="hh-mua"
-                onClick={() => {
-                    useDispatch(actionAddToCart(data, 1));
-                }}
+                onClick={() =>
+                    dispatch(actionAddToCart(data, qty))
+                }
             >Mua</button>
         </div>
     )
@@ -67,18 +71,3 @@ export const DanhSachHangHoa = () => {
     )
 }
 
-const mapStateToProps = state => {
-    return {
-        products: state.products
-    }
-}
-
-const mapDispatchToProps = (dispatch, props) => {
-    return {
-        handleAddToCart: (product) => {
-            dispatch(actionAddToCart(product, 1));
-        }
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(HangHoa);
