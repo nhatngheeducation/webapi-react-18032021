@@ -2,12 +2,16 @@
 import { Button } from 'reactstrap';
 import { actionRemoveCart } from '../actions/index';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { authenHeader } from '../services/AuthenHeader';
+import { actionCleanCart } from '../actions/index';
+import { useHistory } from 'react-router-dom';
 
 export const Cart = () => {
+    const history = useHistory();
     let dispatch = useDispatch();
     const myCartData = useSelector((state) => state.Cart);
     const [myCart, setMyCart] = useState(myCartData);
-    console.log("myCart", myCart);
     const isUserLogged = useSelector((state) => state.User.isLoggedIn);
     const maKhachHang = useSelector((state) => state.User.userId);
 
@@ -27,6 +31,21 @@ export const Cart = () => {
                 "soLuong": item.quantity
             });
         });
+        axios.post("https://localhost:44325/api/DonHang", dataSend, { headers: authenHeader() })
+            .then((res) => {
+                console.log(res);
+                if (res.data.success === true) {
+                    alert("Đặt hàng thành công");
+                    //reset giỏ hàng
+                    dispatch(actionCleanCart());
+                    history.push("/admin/hanghoa/danhsach");
+                    //console.log(res.data.data);
+                }
+                else {
+                    alert(res.data.message);
+                }
+            })
+            .catch((err) => { });
     }
 
     const handleRemoveCart = (item) => {

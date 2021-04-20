@@ -44,3 +44,8 @@ export const actionRemoveCart = (product) => {
     }
 }
 
+export const actionCleanCart = () => {
+    return {
+        type: Types.CLEAN_CART
+    }
+}

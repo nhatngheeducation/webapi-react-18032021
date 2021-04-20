@@ -2,8 +2,9 @@
 
 export const authenHeader = () => {
     const userToken = localStorage.getItem("user");
-    if (userToken) {
-        return { Authorization: 'Bearer ' + userToken }
+    const tokenData = userToken !== undefined ? JSON.parse(userToken).token : null;
+    if (tokenData) {
+        return { Authorization: 'Bearer ' + tokenData }
     } else {
         return {}
     }
