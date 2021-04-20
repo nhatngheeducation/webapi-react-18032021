@@ -8,6 +8,26 @@ export const Cart = () => {
     const myCartData = useSelector((state) => state.Cart);
     const [myCart, setMyCart] = useState(myCartData);
     console.log("myCart", myCart);
+    const isUserLogged = useSelector((state) => state.User.isLoggedIn);
+    const maKhachHang = useSelector((state) => state.User.userId);
+
+    const [nguoiNhan, setNguoiNhan] = useState('');
+    const [diaChiGiao, setDiaChiGiao] = useState('');
+
+    const handleOrderCart = () => {
+        let dataSend = {
+            "maKh": maKhachHang,
+            "nguoiNhan": nguoiNhan.trim(),
+            "diaChiGiao": diaChiGiao.trim(),
+            "hangHoa": []
+        }
+        myCart.map((item) => {
+            dataSend.hangHoa.push({
+                "maHH": item.product.maHh,
+                "soLuong": item.quantity
+            });
+        });
+    }
 
     const handleRemoveCart = (item) => {
         dispatch(actionRemoveCart(item));
@@ -37,6 +57,25 @@ export const Cart = () => {
                 })
                 }
             </table>
+            {myCart !== undefined && myCart.length > 0 && (
+                <div>
+                    {isUserLogged ? (
+                        <div>
+                            <h2>Thông tin đặt hàng</h2>
+                    Người nhận:
+                            <input onChange={(e) => setNguoiNhan(e.target.value) } />
+                            <br />
+                    Địa chỉ giao:
+                            <input onChange={(e) => setDiaChiGiao(e.target.value)} />
+                            <br />
+                            <button onClick={handleOrderCart}>Đặt hàng</button>
+                        </div>
+                    ) : (
+                            <h4>Vui lòng đăng nhập để đặt hàng!</h4>
+                        )}
+
+                </div>
+            )}
         </div>
     );
 }

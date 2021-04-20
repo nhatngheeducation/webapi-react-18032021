@@ -8,7 +8,7 @@ const login = (username, password) => {
             //status 200
             if (response.data.success === true) {
                 console.log("SUCESS AND SET LOCALSTORAGE")
-                localStorage.setItem("user", response.data.data);
+                localStorage.setItem("user", JSON.stringify(response.data.data));
             }
             return response.data;
         });
