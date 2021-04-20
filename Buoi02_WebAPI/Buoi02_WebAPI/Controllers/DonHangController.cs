@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Buoi02_WebAPI.Models;
 using Buoi02_WebAPI.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace Buoi02_WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateOrder(DonHang donHang)
         {
             //var orderId = Guid.NewGuid();            

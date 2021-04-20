@@ -45,6 +45,13 @@ namespace Buoi02_WebAPI.Controllers
                 });
             }
 
+            var data = new UserInfo
+            {
+                Username = khachHang.MaKh,
+                HoTen = khachHang.HoTen,
+                Roles = new List<string>()
+            };
+
             //thông tin đặc trưng của user
             var claims = new List<Claim>()
             {
@@ -56,6 +63,7 @@ namespace Buoi02_WebAPI.Controllers
             //Add quyền cho token
             foreach(var item in khachHang.PhanCong)
             {
+                data.Roles.Add(item.MaVt);
                 claims.Add(new Claim(ClaimTypes.Role, item.MaVt));
             }
 
@@ -67,12 +75,13 @@ namespace Buoi02_WebAPI.Controllers
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_KeyBytes), SecurityAlgorithms.HmacSha512)
             };
             var token = tokenHandler.CreateToken(tokenDesc);
+            data.Token = tokenHandler.WriteToken(token);
 
             return Ok(new ApiResponseModel
             {
                 Success = true,
                 Message = "Đăng nhập thành công",
-                Data = tokenHandler.WriteToken(token)
+                Data = data
             });
         }
     }
