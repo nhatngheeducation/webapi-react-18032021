@@ -1,9 +1,12 @@
 ﻿// src/components/hanghoa/DanhSachHangHoa.js
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assests/hanghoa.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { actionAddToCart } from '../../actions/index';
 import { useDispatch } from 'react-redux';
+import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+
 
 export const HangHoa = (props) => {
     const dispatch = useDispatch();
@@ -64,6 +67,25 @@ export const DanhSachHangHoa = () => {
         setIsLoading(true);
         layDuLieu();
     }
+
+    const generatePagination = () => {
+        let items = [];
+        for (let i = 0; i < totalPage; i++) {
+            items.push(
+                <PaginationItem>
+                    <PaginationLink href="#" onClick={(e) => {
+                        e.preventDefault();
+                        const p = parseInt(e.target.innerText);
+                        setPage(p);
+                    }}>
+                        {i + 1}
+                    </PaginationLink>
+                </PaginationItem>
+            );
+        }
+        return items;
+    }
+
     return (
         <div>
             <h2>Danh sách Hàng hóa</h2>
@@ -82,6 +104,21 @@ export const DanhSachHangHoa = () => {
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select>
+                <Pagination size="sm" aria-label="Page navigation example">
+                    <PaginationItem>
+                        <PaginationLink first href="#" />
+                    </PaginationItem>
+                    <PaginationItem>
+                        <PaginationLink previous href="#" />
+                    </PaginationItem>
+                    {generatePagination()}
+                    <PaginationItem>
+                        <PaginationLink next href="#" />
+                    </PaginationItem>
+                    <PaginationItem>
+                        <PaginationLink last href="#" />
+                    </PaginationItem>
+                </Pagination>
             </div>
             {isLoading ? (
                 <h3><i>Đang tải dữ liệu</i></h3>
