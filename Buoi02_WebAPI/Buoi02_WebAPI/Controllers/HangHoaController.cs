@@ -29,19 +29,21 @@ namespace Buoi02_WebAPI.Controllers
         }
 
         [HttpGet]
-        // host/api/HangHoa?search=xyz&page=1
-        public IActionResult GetAll(string search, int page = 1)
+        public IActionResult GetAll([FromQuery] HangHoaRequestModel model)
         {
-            //HttpContext.Request
+            if (!model.Size.HasValue)
+            {
+                model.Size = SO_PHAN_TU_MOI_TRANG;
+            }
             var hangHoa = _context.HangHoa.AsQueryable();
 
-            if (!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(model.Search))
             {
-                hangHoa = hangHoa.Where(hh => hh.TenHh.Contains(search));
+                hangHoa = hangHoa.Where(hh => hh.TenHh.Contains(model.Search));
             }
 
-            var data = hangHoa.Skip((page - 1) * SO_PHAN_TU_MOI_TRANG)
-                .Take(SO_PHAN_TU_MOI_TRANG)
+            var data = hangHoa.Skip((model.Page - 1) * model.Size.Value)
+                .Take(model.Size.Value)
                 .Select(hh => new HangHoaVM
                 {
                     MaHh = hh.MaHh,

@@ -32,7 +32,13 @@ export const DanhSachHangHoa = () => {
     const [keyword, setKeyword] = useState('');
 
     const layDuLieu = () => {
-        axios.get(hangHoaApi + "?search=" + keyword)
+        const getData = {
+            search: keyword,
+            page: 2,
+            size: 20
+        };
+        //axios.get(hangHoaApi + "?search=" + keyword)
+        axios.get(hangHoaApi, getData)
             .then(response => {
                 setIsLoading(false);
                 setDataHangHoa(response.data);
