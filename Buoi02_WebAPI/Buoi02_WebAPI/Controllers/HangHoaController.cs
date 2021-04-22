@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -51,7 +52,15 @@ namespace Buoi02_WebAPI.Controllers
                     GiaBan = hh.DonGia,
                     Hinh = MyTools.GetRealUrl("HangHoa", hh.Hinh, HttpContext.Request)
                 }).ToList();
-            return Ok(data);
+
+            int totalPage = Convert.ToInt32(Math.Ceiling(hangHoa.Count() * 1.0 / model.Size.Value));
+
+            return Ok(new { 
+                TotalPage = totalPage,
+                PageSize = model.Size.Value,
+                CurrentPage = model.Page,
+                Data = data
+            });
         }
 
         [HttpGet("{id}")]

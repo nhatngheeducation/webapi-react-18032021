@@ -30,18 +30,25 @@ export const DanhSachHangHoa = () => {
     const [isLoading, setIsLoading] = useState(true);
     const hangHoaApi = 'https://localhost:44325/api/hanghoa';
     const [keyword, setKeyword] = useState('');
+    const [pageSize, setPageSize] = useState(25);
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(0);
+
+    const handlePageSizeChange = (e) => {
+        setPageSize(parseInt(e.target.value));
+    }
 
     const layDuLieu = () => {
         const getData = {
             search: keyword,
-            page: 2,
-            size: 20
+            page,
+            size: pageSize
         };
-        //axios.get(hangHoaApi + "?search=" + keyword)
-        axios.get(hangHoaApi, getData)
+        axios.get(hangHoaApi, { params: getData })
             .then(response => {
                 setIsLoading(false);
-                setDataHangHoa(response.data);
+                setDataHangHoa(response.data.data);
+                setTotalPage(response.data.totalPage);
             })
             .catch(err => {
                 console.log(`Lỗi ${err}`);
@@ -50,6 +57,9 @@ export const DanhSachHangHoa = () => {
     useEffect(() => {
         layDuLieu();
     }, []);
+    useEffect(() => {
+        layDuLieu();
+    }, [pageSize, page]);
     const handleSearch = (e) => {
         setIsLoading(true);
         layDuLieu();
@@ -62,6 +72,16 @@ export const DanhSachHangHoa = () => {
                 <input placeholder="Nhập từ khóa"
                     onChange={(e) => setKeyword(e.target.value)} />
                 <button onClick={handleSearch}>Tìm</button>
+            </div>
+            <div>
+                Page: {page}/{totalPage}.
+                Size:
+                <select onChange={handlePageSizeChange}>
+                    <option value="10">10</option>
+                    <option value="25" selected>25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
             </div>
             {isLoading ? (
                 <h3><i>Đang tải dữ liệu</i></h3>
