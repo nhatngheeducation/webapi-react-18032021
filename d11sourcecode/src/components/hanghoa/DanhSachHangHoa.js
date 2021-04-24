@@ -68,61 +68,32 @@ export const DanhSachHangHoa = () => {
         layDuLieu();
     }
 
-    const generatePagination = () => {
-        let items = [];
-        //for (let i = 0; i < totalPage; i++) {
-        //    items.push(
-        //        <PaginationItem>
-        //            <PaginationLink href="#" onClick={(e) => {
-        //                e.preventDefault();
-        //                const p = parseInt(e.target.innerText);
-        //                setPage(p);
-        //            }}>
-        //                {i + 1}
-        //            </PaginationLink>
-        //        </PaginationItem>
-        //    );
-        //}
-        const N = 2;
-        let index = N;
-        while (page - index > 0 && index > 0) {
-            items.push(
-                <PaginationItem>
-                    <PaginationLink href="#" onClick={(e) => {
-                        e.preventDefault();
-                        const p = parseInt(e.target.innerText);
-                        setPage(p);
-                    }}>
-                        {page - index}
-                    </PaginationLink>
-                </PaginationItem>
-            );
-            index--;
-        }
-        items.push(
-            <PaginationItem active>
+    const generatePaginationItem = (index) => {
+        return (
+            <PaginationItem
+                active={page === index}
+            >
                 <PaginationLink href="#" onClick={(e) => {
                     e.preventDefault();
                     const p = parseInt(e.target.innerText);
                     setPage(p);
                 }}>
-                    {page}
+                    {index}
                 </PaginationLink>
             </PaginationItem>
-        );
+        )
+    }
+
+    const generatePagination = () => {
+        let items = []; const N = 2; let index = N;
+        while (page - index > 0 && index > 0) {
+            items.push(generatePaginationItem(page - index));
+            index--;
+        }
+        items.push(generatePaginationItem(page));
         index = 1;
         while (page + index < totalPage && index <= N) {
-            items.push(
-                <PaginationItem>
-                    <PaginationLink href="#" onClick={(e) => {
-                        e.preventDefault();
-                        const p = parseInt(e.target.innerText);
-                        setPage(p);
-                    }}>
-                        {page + index}
-                    </PaginationLink>
-                </PaginationItem>
-            );
+            items.push(generatePaginationItem(page + index));
             index++;
         }
         return items;
