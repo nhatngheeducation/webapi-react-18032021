@@ -16,6 +16,8 @@ import { UploadFile } from './components/UploadFile';
 import { Login } from './components/Login';
 import { Cart } from './components/Cart';
 import { useSelector, useDispatch } from 'react-redux';
+import { routes } from './config/routes';
+import { MyRoute } from './components/MyRoute';
 
 function App() {
     const dispatch = useDispatch();
@@ -23,9 +25,6 @@ function App() {
     const fullName = useSelector(state => state.User.fullName);
     const myCart = useSelector(state => state.Cart);
 
-    //useEffect(() => {
-    //    console.log('Chage state');
-    //}, [dispatch]);
 
     const [hoTen, setHoTen] = useState('Nhất Nghệ');
     const handleChange = (value) => {
@@ -77,7 +76,7 @@ function App() {
                             <Link to="/admin/loai">QL Loại</Link>
                         </li>
                         <li className="menu-item">
-                            <Link to="/admin/hanghoa/danhsach">Hàng hóa</Link>
+                            <Link to="/hanghoa">Hàng hóa</Link>
                         </li>
                         {isLoggedIn ? (
                             <span>Xin chào {fullName}</span>
@@ -99,22 +98,14 @@ function App() {
                 { /* Khai báo định tuyến*/}
                 <div style={{ minHeight: 500, padding: 5 }}>
                     <Switch>
-                        <Route path="/giohang" component={Cart} />
-                        <Route path="/login" component={Login} />
-                        <Route path="/upload" component={UploadFile} />
-                        <Route path="/admin/hanghoa/them" component={ThemHangHoa} />
-                        <Route path="/admin/hanghoa/danhsach" component={DanhSachHangHoa} />
-                        <Route path="/admin/loai" component={Loai} />
-                        <Route path="/demohook" component={DemoHook} />
-                        <Route path="/about" component={About} />
-                        <Route path="/todos" component={TodoList} />
-                        <Route path="/contact">
-                            <Contact />
-                            <About />
-                        </Route>
-                        <Route path="/">
-                            <h2>TRANG CHỦ</h2>
-                        </Route>
+                        {routes.map((item) => (
+                            <MyRoute
+                                key={item.path}
+                                path={item.path}
+                                component={item.component}
+                                isPrivate={item.isPrivate}
+                            />
+                        ))}
                     </Switch>
                 </div>
             </Router>
