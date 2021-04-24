@@ -63,7 +63,9 @@ export const DanhSachHangHoa = () => {
     useEffect(() => {
         layDuLieu();
     }, [pageSize, page]);
+
     const handleSearch = (e) => {
+        setPage(1);
         setIsLoading(true);
         layDuLieu();
     }
@@ -119,7 +121,7 @@ export const DanhSachHangHoa = () => {
                 <button onClick={handleSearch}>Tìm</button>
             </div>
             <div>
-                Page: {page}/{totalPage}.
+
                 Size:
                 <select onChange={handlePageSizeChange}>
                     <option value="10">10</option>
@@ -127,21 +129,32 @@ export const DanhSachHangHoa = () => {
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select>
-                <Pagination size="lg" aria-label="Page navigation example">
-                    <PaginationItem disabled={page === 1}>
-                        <PaginationLink first href="#" />
-                    </PaginationItem>
-                    <PaginationItem disabled={page === 1}>
-                        <PaginationLink previous href="#" />
-                    </PaginationItem>
-                    {generatePagination()}
-                    <PaginationItem disabled={page === totalPage}>
-                        <PaginationLink next href="#" />
-                    </PaginationItem>
-                    <PaginationItem disabled={page === totalPage}>
-                        <PaginationLink last href="#" />
-                    </PaginationItem>
-                </Pagination>
+                {totalPage > 0 ? (
+                    <div>
+                        Page: {page}/{totalPage}.
+                        <Pagination size="lg" aria-label="Page navigation example">
+                            <PaginationItem disabled={page === 1}>
+                                <PaginationLink first href="#" onClick={() => handlePage('first')} />
+                            </PaginationItem>
+                            <PaginationItem disabled={page === 1}>
+                                <PaginationLink previous href="#" onClick={() => handlePage('previous')} />
+                            </PaginationItem>
+                            {generatePagination()}
+                            <PaginationItem disabled={page === totalPage}>
+                                <PaginationLink next href="#" onClick={() => handlePage('next')} />
+                            </PaginationItem>
+                            <PaginationItem disabled={page === totalPage}>
+                                <PaginationLink last href="#" onClick={() => handlePage('last')} />
+                            </PaginationItem>
+                        </Pagination>
+                    </div>
+                ) : (
+                        <div>
+                            Không có dữ liệu.
+                        </div>
+                    )}
+
+
             </div>
             {isLoading ? (
                 <h3><i>Đang tải dữ liệu</i></h3>
