@@ -3,24 +3,13 @@ import { Demo, Hello } from './components/Demo';
 import { useState, useEffect } from 'react';
 import {
     BrowserRouter as Router,
-    Route, Link, Switch
+    Link, Switch
 } from 'react-router-dom';
-import { About } from './components/About';
-import { Contact } from './components/Contact';
-import { TodoList } from './components/TodoList';
-import { DemoHook } from './components/DemoHook';
-import { Loai } from './components/loai/Loai';
-import { ThemHangHoa } from './components/hanghoa/ThemHangHoa';
-import { DanhSachHangHoa } from './components/hanghoa/DanhSachHangHoa';
-import { UploadFile } from './components/UploadFile';
-import { Login } from './components/Login';
-import { Cart } from './components/Cart';
 import { useSelector, useDispatch } from 'react-redux';
 import { routes } from './config/routes';
 import { MyRoute } from './components/MyRoute';
 
 function App() {
-    const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.User.isLoggedIn);
     const fullName = useSelector(state => state.User.fullName);
     const myCart = useSelector(state => state.Cart);
@@ -60,18 +49,6 @@ function App() {
                         <li className="menu-item">
                             <Link to="/" style={{ textDecoration: 'none' }}>Trang chủ</Link>
                         </li>
-                        { /*
-                         <li className="menu-item">
-                            <Link to="/about">Giới thiệu</Link>
-                        </li>
-                        <li className="menu-item">
-                            <Link to="/contact">Danh bạ</Link>
-                        </li>
-                        <li className="menu-item">
-                            <Link to="/todos">QL Công việc</Link>
-                        </li>
-                         */}
-
                         <li className="menu-item">
                             <Link to="/admin/loai">QL Loại</Link>
                         </li>
