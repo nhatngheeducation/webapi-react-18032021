@@ -70,7 +70,22 @@ export const DanhSachHangHoa = () => {
 
     const generatePagination = () => {
         let items = [];
-        for (let i = 0; i < totalPage; i++) {
+        //for (let i = 0; i < totalPage; i++) {
+        //    items.push(
+        //        <PaginationItem>
+        //            <PaginationLink href="#" onClick={(e) => {
+        //                e.preventDefault();
+        //                const p = parseInt(e.target.innerText);
+        //                setPage(p);
+        //            }}>
+        //                {i + 1}
+        //            </PaginationLink>
+        //        </PaginationItem>
+        //    );
+        //}
+        const N = 2;
+        let index = N;
+        while (page - index > 0 && index > 0) {
             items.push(
                 <PaginationItem>
                     <PaginationLink href="#" onClick={(e) => {
@@ -78,10 +93,37 @@ export const DanhSachHangHoa = () => {
                         const p = parseInt(e.target.innerText);
                         setPage(p);
                     }}>
-                        {i + 1}
+                        {page - index}
                     </PaginationLink>
                 </PaginationItem>
             );
+            index--;
+        }
+        items.push(
+            <PaginationItem active>
+                <PaginationLink href="#" onClick={(e) => {
+                    e.preventDefault();
+                    const p = parseInt(e.target.innerText);
+                    setPage(p);
+                }}>
+                    {page}
+                </PaginationLink>
+            </PaginationItem>
+        );
+        index = 1;
+        while (page + index < totalPage && index <= N) {
+            items.push(
+                <PaginationItem>
+                    <PaginationLink href="#" onClick={(e) => {
+                        e.preventDefault();
+                        const p = parseInt(e.target.innerText);
+                        setPage(p);
+                    }}>
+                        {page + index}
+                    </PaginationLink>
+                </PaginationItem>
+            );
+            index++;
         }
         return items;
     }
@@ -104,7 +146,7 @@ export const DanhSachHangHoa = () => {
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select>
-                <Pagination size="sm" aria-label="Page navigation example">
+                <Pagination size="lg" aria-label="Page navigation example">
                     <PaginationItem>
                         <PaginationLink first href="#" />
                     </PaginationItem>
