@@ -92,11 +92,21 @@ export const DanhSachHangHoa = () => {
         }
         items.push(generatePaginationItem(page));
         index = 1;
-        while (page + index < totalPage && index <= N) {
+        while (page + index <= totalPage && index <= N) {
             items.push(generatePaginationItem(page + index));
             index++;
         }
         return items;
+    }
+
+    const handlePage = (action) => {
+        let newPage = 1;
+        switch (action) {
+            case 'next': newPage = page + 1; break;
+            case 'previous': newPage = page - 1; break;
+            case 'last': newPage = totalPage; break;
+        }
+        setPage(newPage);
     }
 
     return (
@@ -118,17 +128,17 @@ export const DanhSachHangHoa = () => {
                     <option value="100">100</option>
                 </select>
                 <Pagination size="lg" aria-label="Page navigation example">
-                    <PaginationItem>
+                    <PaginationItem disabled={page === 1}>
                         <PaginationLink first href="#" />
                     </PaginationItem>
-                    <PaginationItem>
+                    <PaginationItem disabled={page === 1}>
                         <PaginationLink previous href="#" />
                     </PaginationItem>
                     {generatePagination()}
-                    <PaginationItem>
+                    <PaginationItem disabled={page === totalPage}>
                         <PaginationLink next href="#" />
                     </PaginationItem>
-                    <PaginationItem>
+                    <PaginationItem disabled={page === totalPage}>
                         <PaginationLink last href="#" />
                     </PaginationItem>
                 </Pagination>
