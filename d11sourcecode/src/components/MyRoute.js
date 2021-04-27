@@ -4,12 +4,21 @@ import { useSelector } from 'react-redux';
 import jwt_decode from 'jwt-decode';
 
 export const MyRoute = ({ component: Component, path, isPrivate, ...rest }) => {
-    const isUserLogged = useSelector((state) => state.User.isLoggedIn);
+    let isUserLogged = useSelector((state) => state.User.isLoggedIn);
     const tokenData = useSelector((state) => state.User.token);
     if (tokenData != null) {
-        console.log(tokenData.token);
-        //const decoded = jwt_decode(tokenData, { header: true });
-        //console.log("token here: ", decoded);
+        try {
+            const user = JSON.parse(localStorage.getItem("user"));
+            console.log(user.token);
+            const decoded = jwt_decode(user.token);
+            const expDate = new Date(decoded.exp * 1000);
+            const currentTime = new Date();
+            if (expDate < currentTime) {
+                isUserLogged = false;
+            }
+        } catch{
+            isUserLogged = false;
+        }
     }
     
     return (
