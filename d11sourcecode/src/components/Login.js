@@ -8,7 +8,6 @@ import { actionLogin } from '../actions/index';
 export const Login = () => {
     const dispatch = useDispatch();
     const appData = useSelector((state) => state);
-    console.log("appData", appData);
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');

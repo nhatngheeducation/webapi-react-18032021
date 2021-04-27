@@ -45,3 +45,45 @@ export const routes = [
         isPrivate: false
     },
 ];
+
+// Định nghĩa danh sách components
+const components = {
+    login: {
+        path: '/login',
+        component: Login,
+        isPrivate: false
+    },
+    loai: {
+        path: '/admin/loai',
+        component: Loai,
+        isPrivate: true
+    },
+    profile: {
+        path: '/profile',
+        component: Profile,
+        isPrivate: true
+    },
+    hanghoa: {
+        path: '/hanghoa',
+        component: DanhSachHangHoa,
+        isPrivate: false
+    }
+}
+
+
+// Định nghĩa danh sách components theo role
+export const rolesConfig = {
+    Guest: {
+        routes: [
+            components.login, components.hanghoa
+        ]
+    },
+    VT001: //Khách hàng
+    {
+        routes: [components.profile]
+    },
+    VT002: //Quản trị
+    {
+        routes: [components.profile, components.loai]
+    }
+};

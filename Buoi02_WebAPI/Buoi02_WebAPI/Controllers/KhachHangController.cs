@@ -71,7 +71,7 @@ namespace Buoi02_WebAPI.Controllers
             var tokenDesc = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddMinutes(3),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_KeyBytes), SecurityAlgorithms.HmacSha512)
             };
             var token = tokenHandler.CreateToken(tokenDesc);

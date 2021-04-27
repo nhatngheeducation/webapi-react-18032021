@@ -9,9 +9,9 @@ export const MyRoute = ({ component: Component, path, isPrivate, ...rest }) => {
     if (tokenData != null) {
         try {
             const user = JSON.parse(localStorage.getItem("user"));
-            console.log(user.token);
             const decoded = jwt_decode(user.token);
             const expDate = new Date(decoded.exp * 1000);
+            console.log("expDate: ", expDate);
             const currentTime = new Date();
             if (expDate < currentTime) {
                 isUserLogged = false;

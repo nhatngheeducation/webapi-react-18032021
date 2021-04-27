@@ -6,14 +6,27 @@ import {
     Link, Switch
 } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { routes } from './config/routes';
+import { routes, rolesConfig } from './config/routes';
 import { MyRoute } from './components/MyRoute';
+import { uniqBy } from 'lodash';
 
 function App() {
     const isLoggedIn = useSelector(state => state.User.isLoggedIn);
     const fullName = useSelector(state => state.User.fullName);
     const myCart = useSelector(state => state.Cart);
+        
+    let roles = ['Guest'];
+    const userInfo = localStorage.getItem("user");
+    if (isLoggedIn && userInfo !== undefined) {
+        const myroles = JSON.parse(userInfo).roles;
+        //thêm role người dùng
+        roles = [...roles, ...myroles];
+    }
 
+    let allowedRoutes = roles.reduce((acc, role) => {
+        return [...acc, ...rolesConfig[role].routes];
+    }, []);
+    allowedRoutes = uniqBy(allowedRoutes, 'path');
 
     const [hoTen, setHoTen] = useState('Nhất Nghệ');
     const handleChange = (value) => {
@@ -75,7 +88,7 @@ function App() {
                 { /* Khai báo định tuyến*/}
                 <div style={{ minHeight: 500, padding: 5 }}>
                     <Switch>
-                        {routes.map((item) => (
+                        {allowedRoutes.map((item) => (
                             <MyRoute
                                 key={item.path}
                                 path={item.path}
