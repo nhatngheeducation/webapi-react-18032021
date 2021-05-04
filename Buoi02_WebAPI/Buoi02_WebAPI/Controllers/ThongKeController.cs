@@ -59,6 +59,9 @@ namespace Buoi02_WebAPI.Controllers
                 Nam = cthd.MaHdNavigation.NgayDat.Year,
                 Thang = cthd.MaHdNavigation.NgayDat.Month
             })
+                .OrderBy(g => g.Key.Nam)
+                .ThenBy(g => g.Key.Thang)
+                .ThenBy(g => g.Key.HoTen)
                 .Select(g => new
                 {
                     g.Key.MaKh,
