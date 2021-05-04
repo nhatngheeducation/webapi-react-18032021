@@ -2,13 +2,26 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 export const ThongKeDoanhSo = () => {
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
     const [loai, setLoai] = useState([]);
     const [doanhSoTheoLoai, setDoanhSoTheoLoai] = useState([]);
 
     const layThongKeTheoLoai = () => {
-        axios.get("https://localhost:44325/api/ThongKe/loai")
+        startDate.setHours(0);
+        startDate.setMinutes(0);
+        startDate.setSeconds(0);
+        endDate.setHours(23);
+        endDate.setMinutes(59);
+        endDate.setSeconds(59);
+        axios.get("https://localhost:44325/api/ThongKe/loai", {
+            params: { TuNgay: startDate, DenNgay: endDate }
+        })
             .then(res => {
                 if (res.status === 200) {
                     const data_response = res.data;
@@ -54,11 +67,17 @@ export const ThongKeDoanhSo = () => {
                 borderWidth: 1,
             },
         ],
-    };
-
+    };    
     return (
         <div>
             <h2>THỐNG KÊ DOANH SỐ BÁN HÀNG</h2>
+            <div>
+                Từ ngày:
+                <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+                đến:
+                <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
+                <button onClick={layThongKeTheoLoai}>Tra cứu</button>
+            </div>
             <Pie data={data} />
         </div>
     );
