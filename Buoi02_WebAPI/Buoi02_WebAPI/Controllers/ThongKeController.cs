@@ -43,5 +43,32 @@ namespace Buoi02_WebAPI.Controllers
             return Ok(data);
         }
 
+        [HttpGet("khachhang")]
+        public IActionResult ThongKeTheoKhachHang(string MaKH)
+        {
+            var queryData = _context.ChiTietHd.AsQueryable();
+            if (!string.IsNullOrEmpty(MaKH))
+            {
+                queryData = queryData.Where(ct => ct.MaHdNavigation.MaKh == MaKH);
+            }
+
+            var data = queryData.GroupBy(cthd => new
+            {
+                cthd.MaHdNavigation.MaKh,
+                cthd.MaHdNavigation.MaKhNavigation.HoTen,
+                Nam = cthd.MaHdNavigation.NgayDat.Year,
+                Thang = cthd.MaHdNavigation.NgayDat.Month
+            })
+                .Select(g => new
+                {
+                    g.Key.MaKh,
+                    g.Key.HoTen,
+                    ThoiDiem = $"{g.Key.Thang}/{g.Key.Nam}",
+                    DoanhThu = g.Sum(cthd => cthd.SoLuong * cthd.DonGia * (1 - cthd.GiamGia)),
+                    
+                });
+            return Ok(data);
+        }
+
     }
 }
