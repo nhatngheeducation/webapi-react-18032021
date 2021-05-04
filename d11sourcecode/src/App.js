@@ -81,6 +81,11 @@ function App() {
                             </Link>
                             {myCart.length} sp.
                         </li>
+                        <li className="menu-item">
+                            <Link to="/thongke">
+                                Thống kê
+                            </Link>
+                        </li>
 
                     </ul>
                 </div>

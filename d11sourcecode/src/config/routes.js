@@ -7,6 +7,7 @@ import { Cart } from '../components/Cart';
 import { ThemHangHoa } from '../components/hanghoa/ThemHangHoa';
 import { DanhSachHangHoa } from '../components/hanghoa/DanhSachHangHoa';
 import { Loai } from '../components/loai/Loai';
+import { ThongKeDoanhSo } from '../components/thongke/ThongKeDoanhSo';
 
 export const routes = [
     {
@@ -48,6 +49,11 @@ export const routes = [
 
 // Định nghĩa danh sách components
 const components = {
+    thongke: {
+        path: '/thongke',
+        component: ThongKeDoanhSo,
+        isPrivate: false
+    },
     login: {
         path: '/login',
         component: Login,
@@ -75,7 +81,9 @@ const components = {
 export const rolesConfig = {
     Guest: {
         routes: [
-            components.login, components.hanghoa
+            components.login,
+            components.hanghoa,
+            components.thongke
         ]
     },
     VT001: //Khách hàng
