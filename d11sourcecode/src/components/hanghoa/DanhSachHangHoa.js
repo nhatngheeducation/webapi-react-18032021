@@ -24,6 +24,11 @@ export const HangHoa = (props) => {
                     dispatch(actionAddToCart(data, qty))
                 }
             >Mua</button>
+            <button onClick={() =>
+                dispatch({type:'LIKE', payload: data})
+            }>
+                Like!
+            </button>
         </div>
     )
 }

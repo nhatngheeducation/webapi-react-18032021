@@ -6,7 +6,6 @@ const initCartValue = cartData ? JSON.parse(cartData) : [];
 
 let index = -1;
 export const Cart = (state = initCartValue, action) => {
-    console.log("Action: ", action);
     var { product, quantity } = action;
     switch (action.type) {
         case Types.ADD_PRODUCT_TO_CART:

@@ -9,6 +9,10 @@ import { DanhSachHangHoa } from '../components/hanghoa/DanhSachHangHoa';
 import { Loai } from '../components/loai/Loai';
 import { ThongKeDoanhSo } from '../components/thongke/ThongKeDoanhSo';
 
+import CryptoJS from 'crypto-js';
+
+console.log("MD5(VT001)=", CryptoJS.MD5('VT001').toString());
+
 export const routes = [
     {
         path: '/login',
@@ -86,11 +90,13 @@ export const rolesConfig = {
             components.thongke
         ]
     },
-    VT001: //Khách hàng
+    //VT001: //Khách hàng
+    '854dd08f9e2b0f9fe6ca386947fd8354':
     {
         routes: [components.profile]
     },
-    VT002: //Quản trị
+    //VT002: //Quản trị
+    '261eccddf92b090964a8fa2ef8247189':
     {
         routes: [components.profile, components.loai]
     }

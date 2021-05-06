@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Buoi02_WebAPI.Helpers;
 
 namespace Buoi02_WebAPI.Controllers
 {
@@ -63,8 +64,8 @@ namespace Buoi02_WebAPI.Controllers
             //Add quyền cho token
             foreach(var item in khachHang.PhanCong)
             {
-                data.Roles.Add(item.MaVt);
-                claims.Add(new Claim(ClaimTypes.Role, item.MaVt));
+                data.Roles.Add(item.MaVt.ToMd5Hash());
+                claims.Add(new Claim(ClaimTypes.Role, item.MaVt.ToMd5Hash()));
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
